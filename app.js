@@ -205,7 +205,7 @@ class App {
             function (gltf) {
 
                 self.scene.add(gltf.scene);
-                // self.scene.position.setFromMatrixPosition( self.reticle.matrix );
+                self.scene.position.setFromMatrixPosition( self.reticle.matrix );
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
