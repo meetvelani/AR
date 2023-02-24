@@ -109,7 +109,7 @@ class App {
 
             // }
         });
-        this.gestures.addEventListener('dobletap', (ev) => {
+        this.gestures.addEventListener('swipe', (ev) => {
             alert("dobletapa")
             console.log('swipe');
             self.ui.updateElement('info', 'tap');
