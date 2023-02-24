@@ -3,6 +3,10 @@ import { GLTFLoader } from './libs/three/jsm/GLTFLoader.js';
 import { RGBELoader } from './libs/three/jsm/RGBELoader.js';
 import { ARButton } from './libs/ARButton.js';
 import { LoadingBar } from './libs/LoadingBar.js';
+// import { ARButton } from './libs/ARButton.js';
+import { CanvasUI } from './libs/CanvasUI.js';
+import { XRGestures } from './libs/XRGestures.js';
+import { Player } from './libs/Player.js';
 
 class App {
     constructor() {
@@ -60,6 +64,18 @@ class App {
 
 
         const self = this;
+        function onSessionStart() {
+            self.ui.mesh.position.set(0, -0.15, -0.3);
+            self.camera.add(self.ui.mesh);
+        }
+
+        function onSessionEnd() {
+            self.camera.remove(self.ui.mesh);
+        }
+
+        // const btn = new ARButton(this.renderer, { onSessionStart, onSessionEnd });
+
+
 
         this.hitTestSourceRequested = false;
         this.hitTestSource = null;
@@ -76,7 +92,39 @@ class App {
         this.controller = this.renderer.xr.getController(0);
         this.controller.addEventListener('select', onSelect);
 
+        this.gestures = new XRGestures(this.renderer);
+
+
+        // *************************************** add gestures ***********************************
+        this.gestures.addEventListener('tap', (ev) => {
+            console.log('tap');
+            alert("tap")
+            self.ui.updateElement('info', 'tap');
+            // if(!self.chair?.object.visible){
+            //     // self.chair.object.visible = true
+            // }
+            // else{
+            //     // self.chair.object.visible = false
+
+
+            // }
+        });
+        this.gestures.addEventListener('dobletap', (ev) => {
+            alert(dobletap)
+            console.log('swipe');
+            self.ui.updateElement('info', 'tap');
+        });
+
+
+
+
+
+
+        // *************************************** add gestures end***********************************
+
+
         this.scene.add(this.controller);
+        self.renderer.setAnimationLoop(self.render.bind(self));
     }
 
     resize() {
@@ -120,6 +168,7 @@ class App {
             function (gltf) {
 
                 self.scene.add(gltf.scene);
+                // self.scene.position.setFromMatrixPosition( self.reticle.matrix );
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
@@ -141,6 +190,22 @@ class App {
 
             }
         );
+        this.createUI();
+    }
+    createUI() {
+
+        const config = {
+            panelSize: { width: 0.15, height: 0.038 },
+            height: 128,
+            info: { type: "text" }
+        }
+        const content = {
+            info: "Debug info"
+        }
+
+        const ui = new CanvasUI(content, config);
+
+        this.ui = ui;
     }
 
     initAR() {
@@ -154,17 +219,20 @@ class App {
             self.renderer.xr.setReferenceSpaceType('local');
             self.renderer.xr.setSession(session);
             currentSession = session;
-            
+            self.ui.mesh.position.set(0, -0.15, -0.3);
+            self.camera.add(self.ui.mesh);
+
 
         }
         function onSessionEnded() {
-            currentSession.removeEventListener("end",onSessionEnded)
+            currentSession.removeEventListener("end", onSessionEnded)
             currentSession = null;
-            if(self.chair !==null){
+            if (self.chair !== null) {
                 self.scene.remove(self.chair);
                 self.chair = null
             }
             self.renderer.setAnimationLoop(null);
+            self.camera.remove(self.ui.mesh);
         }
         navigator.xr.requestSession("immersive-ar", sessionInit).then(onSessionStarted);
 
@@ -224,6 +292,10 @@ class App {
             if (this.hitTestSourceRequested === false) this.requestHitTestSource()
 
             if (this.hitTestSource) this.getHitTestResults(frame);
+        }
+        if ( this.renderer.xr.isPresenting ){
+            this.gestures.update();
+            this.ui.update();
         }
 
         this.renderer.render(this.scene, this.camera);
