@@ -130,7 +130,12 @@ class App {
         });
         this.gestures.addEventListener('pinch', (ev) => {
             // alert('pinch', ev.scale);
-            self.chair.scale.set(0.001+ ev.delta, 0.001+ ev.delta, 0.001+ ev.delta);
+            try{
+                self.chair.scale.set(0.001+ ev.delta, 0.001+ ev.delta, 0.001+ ev.delta);
+            }
+            catch(err){
+                
+            }
 
             
             // self.chair.rotation.y += 0.1;
