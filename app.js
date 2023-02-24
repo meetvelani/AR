@@ -114,6 +114,11 @@ class App {
             console.log('swipe');
             self.ui.updateElement('info', 'tap');
         });
+        this.gestures.addEventListener('pan', (ev) => {
+            alert("pan")
+            console.log('swipe');
+            self.ui.updateElement('info', 'tap');
+        });
 
 
 
