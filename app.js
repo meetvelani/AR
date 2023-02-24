@@ -122,10 +122,10 @@ class App {
             if(ev.direction ==="UP"){
                 self.chair.position.y +=0.1
             }
-            if(ev.direction ==="Left"){
+            if(ev.direction ==="LEFT"){
                 self.chair.position.X +=0.1
             }
-            if(ev.direction ==="right"){
+            if(ev.direction ==="RIGHT"){
                 self.chair.position.X +=0.1
             }
             
