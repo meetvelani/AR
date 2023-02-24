@@ -116,7 +116,7 @@ class App {
         });
         this.gestures.addEventListener('swipe', (ev) => {
             // alert("dobletapa")
-            console.log('swipe', ev);
+            console.log('swipe', ev.direction);
             // self.chair.visible = false;
             console.log('swipe', self.chair.rotation);
             self.chair.rotation.y += 0.1;
@@ -127,9 +127,17 @@ class App {
         this.gestures.addEventListener('pan', (ev) => {
             console.log('pan', ev);
             self.chair.rotation.y += 0.1;
-
-
-
+        });
+        this.gestures.addEventListener('pinch', (ev) => {
+            console.log('pinch', ev.scale);
+            if (ev.initialse!== undefined){
+                self.startScale= self.chair.scale.clone();
+            }
+            else{
+                const scale = self.startScale.clone().multiplyScalar(ev.scale);
+                self.chair.scale.copy(scale);
+            }
+            // self.chair.rotation.y += 0.1;
         });
 
 
