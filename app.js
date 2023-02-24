@@ -116,49 +116,67 @@ class App {
         });
         this.gestures.addEventListener('swipe', (ev) => {
             // alert("dobletapa")
-            if(ev.direction ==="DOWN"){
-                self.chair.position.y -=0.1
+            if (ev.direction === "DOWN") {
+                self.chair.position.y -= 0.1
             }
-            if(ev.direction ==="UP"){
-                self.chair.position.y +=0.1
+            if (ev.direction === "UP") {
+                self.chair.position.y += 0.1
             }
-            if(ev.direction ==="LEFT"){
-                self.chair.position.X +=0.1
+            if (ev.direction === "LEFT") {
+                self.chair.position.X += 0.1
             }
-            if(ev.direction ==="RIGHT"){
-                self.chair.position.X +=0.1
+            if (ev.direction === "RIGHT") {
+                self.chair.position.X += 0.1
             }
-            
+
             console.log('swipe', ev.direction);
-            
+
 
             self.ui.updateElement('info', 'tap');
         });
+        // let statPosition
         this.gestures.addEventListener('pan', (ev) => {
-            console.log('pan', ev);
-            self.chair.rotation.y += 0.1;
+            // console.log('pan', ev.delta);
+            if (ev.initialise !== undefined){
+                self.statPosition = self.chair.position.clone()
+            console.log('pan', self.statPosition );
+
+            }
+            else{
+                // const pos = self.statPosition.clone().add(ev.delta.x*3,ev.delta.y*3,ev.delta.z*3)
+            // console.log('pan',pos );
+
+                // self.chair.position.copy(pos)
+                self.chair.position.X = self.statPosition.x + ev.delta.X*3;
+            self.chair.position.y = self.statPosition.y + ev.delta.y*3;
+            self.chair.position.Z = self.statPosition.z + ev.delta.z*3;
+            }
+            // const pos = 
+            // self.chair.position.X += 0.1+ ev.delta.X/100;
+            // self.chair.position.y += ev.delta.Y/100;
+            // self.chair.position.Z += ev.delta.Z/100;
         });
         this.gestures.addEventListener('pinch', (ev) => {
             // alert('pinch', ev.scale);
-            try{
-                self.chair.scale.set(0.001+ ev.delta/30, 0.001+ ev.delta/30, 0.001+ ev.delta/30);
+            try {
+                self.chair.scale.set(0.001 + ev.delta / 30, 0.001 + ev.delta / 30, 0.001 + ev.delta / 30);
             }
-            catch(err){
+            catch (err) {
 
             }
 
-            
+
             // self.chair.rotation.y += 0.1;
         });
         this.gestures.addEventListener('rotate', (ev) => {
-            try{
-                self.chair.rotation.y += ev.theta/30;
+            try {
+                self.chair.rotation.y += ev.theta / 30;
             }
-            catch(err){
+            catch (err) {
 
             }
 
-            
+
             // self.chair.rotation.y += 0.1;
         });
 
@@ -215,7 +233,7 @@ class App {
             function (gltf) {
 
                 self.scene.add(gltf.scene);
-                self.scene.position.setFromMatrixPosition( self.reticle.matrix );
+                self.scene.position.setFromMatrixPosition(self.reticle.matrix);
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
