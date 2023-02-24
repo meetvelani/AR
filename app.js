@@ -116,11 +116,21 @@ class App {
         });
         this.gestures.addEventListener('swipe', (ev) => {
             // alert("dobletapa")
+            if(ev.direction ==="DOWN"){
+                self.chair.position.y -=0.1
+            }
+            if(ev.direction ==="UP"){
+                self.chair.position.y +=0.1
+            }
+            if(ev.direction ==="Left"){
+                self.chair.position.X +=0.1
+            }
+            if(ev.direction ==="right"){
+                self.chair.position.X +=0.1
+            }
+            
             console.log('swipe', ev.direction);
-            // self.chair.visible = false;
-            console.log('swipe', self.chair.rotation);
-            self.chair.rotation.y += 0.1;
-            console.log('swipe', self.chair.position);
+            
 
             self.ui.updateElement('info', 'tap');
         });
