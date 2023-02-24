@@ -84,8 +84,12 @@ class App {
             if (self.chair === undefined) return;
 
             if (self.reticle.visible) {
-                self.chair.position.setFromMatrixPosition(self.reticle.matrix);
+                // self.chair.position.setFromMatrixPosition(self.reticle.matrix);
                 self.chair.visible = true;
+            }
+            else{
+                self.chair.position.setFromMatrixPosition(self.reticle.matrix);
+
             }
         }
 
@@ -97,27 +101,30 @@ class App {
 
         // *************************************** add gestures ***********************************
         this.gestures.addEventListener('tap', (ev) => {
-            console.log('tap');
-            alert("tap")
+            console.log('tap',self.chair);
+            self.chair.visible = true;
+
+
+            // alert("tap")
             self.ui.updateElement('info', 'tap');
-            // if(!self.chair?.object.visible){
-            //     // self.chair.object.visible = true
-            // }
-            // else{
-            //     // self.chair.object.visible = false
+            self.chair.position.setFromMatrixPosition(self.reticle.matrix);
 
-
-            // }
+            
         });
         this.gestures.addEventListener('swipe', (ev) => {
-            alert("dobletapa")
-            console.log('swipe');
+            // alert("dobletapa")
+            console.log('swipe',ev);
+            self.chair.visible = false;
+            console.log('swipe',self.chair.position);
+            self.chair.rotation.y += 0.1;
+            console.log('swipe',self.chair.position);
+
             self.ui.updateElement('info', 'tap');
         });
         this.gestures.addEventListener('pan', (ev) => {
-            alert("pan")
-            console.log('swipe');
-            self.ui.updateElement('info', 'tap');
+            console.log('pan',ev);
+
+            
         });
 
 
