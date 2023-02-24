@@ -39,7 +39,7 @@ class App {
             new THREE.MeshBasicMaterial()
         );
 
-        this.reticle.matrixAutoUpdate = false;
+        this.reticle.matrixAutoUpdate = true;
         this.reticle.visible = false;
         this.scene.add(this.reticle);
 
@@ -107,8 +107,8 @@ class App {
 
             // alert("tap")
             self.ui.updateElement('info', 'tap');
-            self.chair.scale.set(0.001, 0.001, 0.001);
-            // self.chair.rotation.y = Math.PI;
+            // self.chair.scale.set(0.001, 0.001, 0.001);
+            // self.chair.rotation.y = 4.5;
             self.chair.position.y = -0.51;
             self.chair.position.setFromMatrixPosition(self.reticle.matrix);
 
@@ -132,6 +132,19 @@ class App {
             // alert('pinch', ev.scale);
             try{
                 self.chair.scale.set(0.001+ ev.delta/10, 0.001+ ev.delta/10, 0.001+ ev.delta/10);
+            }
+            catch(err){
+
+            }
+
+            
+            // self.chair.rotation.y += 0.1;
+        });
+        this.gestures.addEventListener('rotate', (ev) => {
+            // alert('pinch', ev.scale);
+            try{
+                self.chair.rotation.y += ev.theta;
+
             }
             catch(err){
 
@@ -198,6 +211,8 @@ class App {
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
+                self.chair.scale.set(0.001, 0.001, 0.001);
+
 
                 self.loadingBar.visible = false;
 
