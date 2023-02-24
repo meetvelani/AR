@@ -110,6 +110,8 @@ class App {
             // self.chair.scale.set(0.001, 0.001, 0.001);
             // self.chair.rotation.y = 4.5;
             self.chair.position.y = -0.51;
+                self.chair.scale.set(0.001, 0.001, 0.001);
+
             self.chair.position.setFromMatrixPosition(self.reticle.matrix);
 
 
@@ -131,7 +133,7 @@ class App {
         this.gestures.addEventListener('pinch', (ev) => {
             // alert('pinch', ev.scale);
             try{
-                self.chair.scale.set(0.001+ ev.delta/10, 0.001+ ev.delta/10, 0.001+ ev.delta/10);
+                self.chair.scale.set(0.001+ ev.delta/100, 0.001+ ev.delta/100, 0.001+ ev.delta/100);
             }
             catch(err){
 
@@ -141,10 +143,8 @@ class App {
             // self.chair.rotation.y += 0.1;
         });
         this.gestures.addEventListener('rotate', (ev) => {
-            // alert('pinch', ev.scale);
             try{
-                self.chair.rotation.y += ev.theta;
-
+                self.chair.rotation.y += ev.theta/100;
             }
             catch(err){
 
@@ -211,7 +211,6 @@ class App {
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
-                self.chair.scale.set(0.001, 0.001, 0.001);
 
 
                 self.loadingBar.visible = false;
