@@ -129,7 +129,7 @@ class App {
             self.chair.rotation.y += 0.1;
         });
         this.gestures.addEventListener('pinch', (ev) => {
-            console.log('pinch', ev.scale);
+            alert('pinch', ev.scale);
             if (ev.initialse!== undefined){
                 self.startScale= self.chair.scale.clone();
             }
