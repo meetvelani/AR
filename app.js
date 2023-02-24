@@ -3,10 +3,9 @@ import { GLTFLoader } from './libs/three/jsm/GLTFLoader.js';
 import { RGBELoader } from './libs/three/jsm/RGBELoader.js';
 import { ARButton } from './libs/ARButton.js';
 import { LoadingBar } from './libs/LoadingBar.js';
-// import { ARButton } from './libs/ARButton.js';
 import { CanvasUI } from './libs/CanvasUI.js';
 import { XRGestures } from './libs/XRGestures.js';
-import { Player } from './libs/Player.js';
+
 
 class App {
     constructor() {
@@ -39,7 +38,7 @@ class App {
             new THREE.MeshBasicMaterial()
         );
 
-        this.reticle.matrixAutoUpdate = true;
+        this.reticle.matrixAutoUpdate = false;
         this.reticle.visible = false;
         this.scene.add(this.reticle);
 
@@ -63,19 +62,8 @@ class App {
         }
 
 
+
         const self = this;
-        function onSessionStart() {
-            self.ui.mesh.position.set(0, -0.15, -0.3);
-            self.camera.add(self.ui.mesh);
-        }
-
-        function onSessionEnd() {
-            self.camera.remove(self.ui.mesh);
-        }
-
-        // const btn = new ARButton(this.renderer, { onSessionStart, onSessionEnd });
-
-
 
         this.hitTestSourceRequested = false;
         this.hitTestSource = null;
@@ -84,18 +72,17 @@ class App {
             if (self.chair === undefined) return;
 
             if (self.reticle.visible) {
-                // self.chair.position.setFromMatrixPosition(self.reticle.matrix);
-                self.chair.visible = true;
-            }
-            else {
                 self.chair.position.setFromMatrixPosition(self.reticle.matrix);
-
+                self.chair.visible = true;
             }
         }
 
+
+
+
+
         this.controller = this.renderer.xr.getController(0);
         this.controller.addEventListener('select', onSelect);
-
         this.gestures = new XRGestures(this.renderer);
 
 
@@ -103,19 +90,11 @@ class App {
         this.gestures.addEventListener('tap', (ev) => {
             console.log('tap', self.chair);
             self.chair.visible = true;
-
-
-            // alert("tap")
-            self.ui.updateElement('info', 'tap');
-            // self.chair.scale.set(0.001, 0.001, 0.001);
-            // self.chair.rotation.y = 4.5;
             self.chair.position.y = -0.51;
             self.chair.position.setFromMatrixPosition(self.reticle.matrix);
-
-
         });
+
         this.gestures.addEventListener('swipe', (ev) => {
-            // alert("dobletapa")
             if (ev.direction === "DOWN") {
                 self.chair.position.y -= 0.1
             }
@@ -128,68 +107,42 @@ class App {
             if (ev.direction === "RIGHT") {
                 self.chair.position.X += 0.1
             }
-
-            console.log('swipe', ev.direction);
-
-
-            self.ui.updateElement('info', 'tap');
         });
-        // let statPosition
+
         this.gestures.addEventListener('pan', (ev) => {
-            // console.log('pan', ev.delta);
-            if (ev.initialise !== undefined){
+            if (ev.initialise !== undefined) {
                 self.statPosition = self.chair.position.clone()
-            console.log('pan', self.statPosition );
+                console.log('pan', self.statPosition);
 
             }
-            else{
-                // const pos = self.statPosition.clone().add(ev.delta.x*3,ev.delta.y*3,ev.delta.z*3)
-            // console.log('pan',pos );
-
-                // self.chair.position.copy(pos)
-                self.chair.position.X = self.statPosition.x + ev.delta.X*3;
-            self.chair.position.y = self.statPosition.y + ev.delta.y*3;
-            self.chair.position.Z = self.statPosition.z + ev.delta.z*3;
+            else {
+                self.chair.position.X = self.statPosition.x + ev.delta.X * 3;
+                self.chair.position.y = self.statPosition.y + ev.delta.y * 3;
+                self.chair.position.Z = self.statPosition.z + ev.delta.z * 3;
             }
-            // const pos = 
-            // self.chair.position.X += 0.1+ ev.delta.X/100;
-            // self.chair.position.y += ev.delta.Y/100;
-            // self.chair.position.Z += ev.delta.Z/100;
         });
+
         this.gestures.addEventListener('pinch', (ev) => {
-            // alert('pinch', ev.scale);
             try {
                 self.chair.scale.set(0.001 + ev.delta / 30, 0.001 + ev.delta / 30, 0.001 + ev.delta / 30);
             }
             catch (err) {
-
             }
-
-
-            // self.chair.rotation.y += 0.1;
         });
         this.gestures.addEventListener('rotate', (ev) => {
             try {
                 self.chair.rotation.y += ev.theta / 30;
             }
             catch (err) {
-
             }
-
-
-            // self.chair.rotation.y += 0.1;
         });
-
-
-
-
-
 
         // *************************************** add gestures end***********************************
 
 
         this.scene.add(this.controller);
         self.renderer.setAnimationLoop(self.render.bind(self));
+
     }
 
     resize() {
@@ -217,7 +170,6 @@ class App {
     }
 
     showChair(id) {
-        console.log("dsfgsdfg")
         this.initAR();
 
         const loader = new GLTFLoader().setPath(this.assetsPath);
@@ -233,11 +185,13 @@ class App {
             function (gltf) {
 
                 self.scene.add(gltf.scene);
-                self.scene.position.setFromMatrixPosition(self.reticle.matrix);
+                // self.scene.position.setFromMatrixPosition(self.reticle.matrix);
+
                 self.chair = gltf.scene;
 
                 self.chair.visible = false;
                 self.chair.scale.set(0.001, 0.001, 0.001);
+                self.chair.rotation.y = 4.5;
 
 
                 self.loadingBar.visible = false;
@@ -257,23 +211,9 @@ class App {
 
             }
         );
-        this.createUI();
+
     }
-    createUI() {
 
-        const config = {
-            panelSize: { width: 0.15, height: 0.038 },
-            height: 128,
-            info: { type: "text" }
-        }
-        const content = {
-            info: "Debug info"
-        }
-
-        const ui = new CanvasUI(content, config);
-
-        this.ui = ui;
-    }
 
     initAR() {
         //TO DO 2: Start an AR session
@@ -286,8 +226,7 @@ class App {
             self.renderer.xr.setReferenceSpaceType('local');
             self.renderer.xr.setSession(session);
             currentSession = session;
-            self.ui.mesh.position.set(0, -0.15, -0.3);
-            self.camera.add(self.ui.mesh);
+
 
 
         }
@@ -299,10 +238,8 @@ class App {
                 self.chair = null
             }
             self.renderer.setAnimationLoop(null);
-            self.camera.remove(self.ui.mesh);
         }
         navigator.xr.requestSession("immersive-ar", sessionInit).then(onSessionStarted);
-
 
     }
 
@@ -362,7 +299,7 @@ class App {
         }
         if (this.renderer.xr.isPresenting) {
             this.gestures.update();
-            this.ui.update();
+            // this.ui.update();
         }
 
         this.renderer.render(this.scene, this.camera);
