@@ -131,10 +131,10 @@ class App {
         this.gestures.addEventListener('pinch', (ev) => {
             // alert('pinch', ev.scale);
             try{
-                self.chair.scale.set(0.001+ ev.delta, 0.001+ ev.delta, 0.001+ ev.delta);
+                self.chair.scale.set(0.001+ ev.delta/10, 0.001+ ev.delta/10, 0.001+ ev.delta/10);
             }
             catch(err){
-                
+
             }
 
             
