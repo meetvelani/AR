@@ -87,7 +87,7 @@ class App {
                 // self.chair.position.setFromMatrixPosition(self.reticle.matrix);
                 self.chair.visible = true;
             }
-            else{
+            else {
                 self.chair.position.setFromMatrixPosition(self.reticle.matrix);
 
             }
@@ -101,30 +101,35 @@ class App {
 
         // *************************************** add gestures ***********************************
         this.gestures.addEventListener('tap', (ev) => {
-            console.log('tap',self.chair);
+            console.log('tap', self.chair);
             self.chair.visible = true;
 
 
             // alert("tap")
             self.ui.updateElement('info', 'tap');
+            self.chair.scale.set(0.001, 0.001, 0.001);
+            // self.chair.rotation.y = Math.PI;
+            self.chair.position.y = -0.51;
             self.chair.position.setFromMatrixPosition(self.reticle.matrix);
 
-            
+
         });
         this.gestures.addEventListener('swipe', (ev) => {
             // alert("dobletapa")
-            console.log('swipe',ev);
-            self.chair.visible = false;
-            console.log('swipe',self.chair.position);
+            console.log('swipe', ev);
+            // self.chair.visible = false;
+            console.log('swipe', self.chair.rotation);
             self.chair.rotation.y += 0.1;
-            console.log('swipe',self.chair.position);
+            console.log('swipe', self.chair.position);
 
             self.ui.updateElement('info', 'tap');
         });
         this.gestures.addEventListener('pan', (ev) => {
-            console.log('pan',ev);
+            console.log('pan', ev);
+            self.chair.rotation.y += 0.1;
 
-            
+
+
         });
 
 
@@ -175,7 +180,7 @@ class App {
         // Load a glTF resource
         loader.load(
             // resource URL
-            `chair${id}.glb`,
+            `s002.glb`,
             // called when the resource is loaded
             function (gltf) {
 
@@ -305,7 +310,7 @@ class App {
 
             if (this.hitTestSource) this.getHitTestResults(frame);
         }
-        if ( this.renderer.xr.isPresenting ){
+        if (this.renderer.xr.isPresenting) {
             this.gestures.update();
             this.ui.update();
         }
