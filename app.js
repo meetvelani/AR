@@ -1,5 +1,6 @@
 import * as THREE from './libs/three125/three.module.js';
 import { GLTFLoader } from './libs/three/jsm/GLTFLoader.js';
+import { OBJLoader } from './libs/three/jsm/OBJLoader.js';
 import { RGBELoader } from './libs/three/jsm/RGBELoader.js';
 import { ARButton } from './libs/ARButton.js';
 import { LoadingBar } from './libs/LoadingBar.js';
@@ -168,26 +169,55 @@ class App {
             console.error('An error occurred setting the environment');
         });
     }
+    initColor(parent, type, mtl) {
+        // const type = "all"
+        parent.traverse(o => {
+            // if (o.name === type) {
+            //     o.material = mtl;
+            // }
+            o.material = mtl;
+        });
+    }
 
     showChair(id) {
         this.initAR();
 
-        const loader = new GLTFLoader().setPath(this.assetsPath);
+        const loader = new OBJLoader().setPath(this.assetsPath);
         const self = this;
+        const txt = new THREE.TextureLoader().load("img/wood_.jpg");
+
+
+        txt.repeat.set(2, 2, 2);
+        txt.wrapS = THREE.RepeatWrapping;
+        txt.wrapT = THREE.RepeatWrapping;
+        const new_mtl = new THREE.MeshPhongMaterial({
+            map: txt
+        });
+        // const INITIAL_MTL = new THREE.TextureLoader().load("img/denim_.jpg");
+
+        const INITIAL_MAP = [
+            { childID: "Plane032", mtl: new_mtl },
+            { childID: "Object001", mtl: new_mtl },
+            { childID: "Object003", mtl: new_mtl },
+            { childID: "Object006", mtl: new_mtl },
+            { childID: "Box003", mtl: new_mtl }];
 
         this.loadingBar.visible = true;
 
         // Load a glTF resource
         loader.load(
             // resource URL
-            `s002.glb`,
+            `s002.obj`,
             // called when the resource is loaded
             function (gltf) {
 
-                self.scene.add(gltf.scene);
+                self.scene.add(gltf);
                 // self.scene.position.setFromMatrixPosition(self.reticle.matrix);
 
-                self.chair = gltf.scene;
+                self.chair = gltf;
+                for (let object of INITIAL_MAP) {
+                    self.initColor(self.chair, object.childID, object.mtl);
+                }
 
                 self.chair.visible = false;
                 self.chair.scale.set(0.001, 0.001, 0.001);
@@ -207,7 +237,7 @@ class App {
             // called when loading has errors
             function (error) {
 
-                console.log('An error happened');
+                console.log(error, 'An error happened');
 
             }
         );
