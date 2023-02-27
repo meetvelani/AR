@@ -90,12 +90,12 @@ class App {
 
 
         // *************************************** add gestures ***********************************
-        this.gestures.addEventListener('tap', (ev) => {
-            console.log('tap', self.chair);
-            self.chair.visible = true;
-            self.chair.position.y = -0.51;
-            self.chair.position.setFromMatrixPosition(self.reticle.matrix);
-        });
+        // this.gestures.addEventListener('tap', (ev) => {
+        //     console.log('tap', self.chair);
+        //     // self.chair.visible = true;
+        //     self.chair.position.y = -0.51;
+        //     self.chair.position.setFromMatrixPosition(self.reticle.matrix);
+        // });
 
         this.gestures.addEventListener('swipe', (ev) => {
             if (ev.direction === "DOWN") {
