@@ -85,17 +85,16 @@ class App {
 
 
         this.controller = this.renderer.xr.getController(0);
-        this.controller.addEventListener('select', onSelect);
+        // this.controller.addEventListener('select', onSelect);
         this.gestures = new XRGestures(this.renderer);
 
 
         // *************************************** add gestures ***********************************
         this.gestures.addEventListener('doubletap', (ev) => {
-            // alert('tap', self.chair);
-            console.log('tap', self.chair);
-            self.chair.visible = true;
-            self.chair.position.y = -0.51;
-            self.chair.position.setFromMatrixPosition(self.reticle.matrix);
+            onSelect()
+            // if (self.chair === undefined) return;
+            // self.chair.visible = true;
+            // self.chair.position.setFromMatrixPosition(self.reticle.matrix);
         });
 
         this.gestures.addEventListener('swipe', (ev) => {
@@ -128,7 +127,7 @@ class App {
 
         this.gestures.addEventListener('pinch', (ev) => {
             try {
-                if (0.001 + ev.delta / 30 >0){
+                if (0.001 + ev.delta / 30 > 0) {
 
                     self.chair.scale.set(0.001 + ev.delta / 30, 0.001 + ev.delta / 30, 0.001 + ev.delta / 30);
                 }
