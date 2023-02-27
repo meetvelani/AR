@@ -90,7 +90,8 @@ class App {
 
 
         // *************************************** add gestures ***********************************
-        this.gestures.addEventListener('tap', (ev) => {
+        this.gestures.addEventListener('doubletap', (ev) => {
+            alert('tap', self.chair);
             console.log('tap', self.chair);
             self.chair.visible = true;
             self.chair.position.y = -0.51;
