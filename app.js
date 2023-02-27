@@ -29,6 +29,8 @@ class App {
 
         this.renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
         this.renderer.setPixelRatio(window.devicePixelRatio);
+        this.renderer.shadowMap.enabled = true;
+
         this.renderer.setSize(window.innerWidth, window.innerHeight);
         this.renderer.outputEncoding = THREE.sRGBEncoding;
         container.appendChild(this.renderer.domElement);
@@ -170,30 +172,32 @@ class App {
         });
     }
     initColor(parent, type, mtl) {
-        // const type = "all"
         parent.traverse(o => {
-            // if (o.name === type) {
-            //     o.material = mtl;
-            // }
-            o.material = mtl;
+            if (o.name === "Plane032") {
+                o.material = mtl;
+            }
+            console.log("dfg", o.name)
         });
     }
 
     showChair(id) {
         this.initAR();
 
-        const loader = new OBJLoader().setPath(this.assetsPath);
+        // ********************************** obj loader ****************************
+        // const loader = new OBJLoader().setPath(this.assetsPath);
+        const loader = new GLTFLoader().setPath(this.assetsPath);
+
         const self = this;
-        const txt = new THREE.TextureLoader().load("img/wood_.jpg");
 
-
-        txt.repeat.set(2, 2, 2);
+        const txt = new THREE.TextureLoader().load('img/denim_.jpg');
+        txt.repeat.set(12, 13, 13);
         txt.wrapS = THREE.RepeatWrapping;
         txt.wrapT = THREE.RepeatWrapping;
         const new_mtl = new THREE.MeshPhongMaterial({
             map: txt
         });
         // const INITIAL_MTL = new THREE.TextureLoader().load("img/denim_.jpg");
+        const INITIAL_MTL = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 10 });
 
         const INITIAL_MAP = [
             { childID: "Plane032", mtl: new_mtl },
@@ -207,28 +211,85 @@ class App {
         // Load a glTF resource
         loader.load(
             // resource URL
-            `s002.obj`,
+            `s002.glb`,
             // called when the resource is loaded
             function (gltf) {
 
-                self.scene.add(gltf);
+                self.scene.add(gltf.scene);
                 // self.scene.position.setFromMatrixPosition(self.reticle.matrix);
 
-                self.chair = gltf;
-                for (let object of INITIAL_MAP) {
-                    self.initColor(self.chair, object.childID, object.mtl);
-                }
+                self.chair = gltf.scene;
+
 
                 self.chair.visible = false;
                 self.chair.scale.set(0.001, 0.001, 0.001);
                 self.chair.rotation.y = 4.5;
+                self.chair.traverse(o => {
+                    if (o.isMesh) {
+                        o.castShadow = true;
+                        o.receiveShadow = true;
+                    }
+                });
+                // for (let object of INITIAL_MAP) {
+                //     self.initColor(self.chair, object.childID, object.mtl);
+                // }
 
 
                 self.loadingBar.visible = false;
-
                 self.renderer.setAnimationLoop(self.render.bind(self));
             },
+
+
+            // ************************************** obj loader end ******************************
             // called while loading is progressing
+            // const loader = new GLTFLoader().setPath(this.assetsPath);
+            // const self = this;
+            // const txt = new THREE.TextureLoader().load('img/denim_.jpg');
+
+
+            // txt.repeat.set(3, 3, 3);
+            // txt.wrapS = THREE.RepeatWrapping;
+            // txt.wrapT = THREE.RepeatWrapping;
+            // const new_mtl = new THREE.MeshPhongMaterial({
+            //     map: txt
+            // });
+            // // const new_mtl = new THREE.MeshPhongMaterial({
+            // //     color: parseInt(0x89CFF0),
+            // //     // shininess: 10
+            // //   });
+            // // const INITIAL_MTL = new THREE.TextureLoader().load("img/denim_.jpg");
+            // const INITIAL_MTL = new THREE.MeshPhongMaterial({ color: 0xffffff, shininess: 10 });
+
+            // const INITIAL_MAP = [
+            //     { childID: "Plane032", mtl: new_mtl },
+            //     { childID: "Object001", mtl: new_mtl },
+            //     { childID: "Object003", mtl: new_mtl },
+            //     { childID: "Object006", mtl: new_mtl },
+            //     { childID: "Box003", mtl: new_mtl }];
+
+            // this.loadingBar.visible = true;
+            // loader.load(
+            //     // resource URL
+            //     `s002.glb`,
+            //     // called when the resource is loaded
+            //     function (gltf) {
+
+            //         self.scene.add(gltf.scene);
+            //         self.scene.position.setFromMatrixPosition(self.reticle.matrix);
+            //         self.chair = gltf.scene;
+
+            //         self.chair.visible = false;
+            //         self.chair.scale.set(0.001, 0.001, 0.001);
+            //         self.chair.rotation.y = 4.5;
+            //         for (let object of INITIAL_MAP) {
+            //             self.initColor(self.chair, object.childID, object.mtl);
+            //         }
+
+
+            //         self.loadingBar.visible = false;
+
+            //         self.renderer.setAnimationLoop(self.render.bind(self));
+            //     },
             function (xhr) {
 
                 self.loadingBar.progress = (xhr.loaded / xhr.total);

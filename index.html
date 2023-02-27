@@ -18,11 +18,11 @@
   <script type="module">
     import { App } from './app.js';
 
-    document.addEventListener("DOMContentLoaded", function(){
-        const app = new App();
-        window.app = app;
+    document.addEventListener("DOMContentLoaded", function () {
+      const app = new App();
+      window.app = app;
     });
-</script>
+  </script>
   <section class="product-page">
 
     <div class="image-slider">
@@ -147,7 +147,9 @@
       <div class="action-btn">
         <button>Add to Cart</button>
         <button>buy now</button>
-        <button id="ar-button" onclick="window.app.showChair(1);">Start AR</button>
+        <div class="ar-wrapper">
+          <button id="ar-button" onclick="window.app.showChair(1);">Start AR</button>
+        </div>
       </div>
       <div class="product-detail">
         <div class="heading">Product details</div>

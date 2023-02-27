@@ -1,6 +1,12 @@
 #ar-button{
 	display: none;
 }
+.ar-wrapper{
+	display: none;
+}
+canvas{
+	display: none !important; 
+ } 
 body {
     /* font-family: Arial; */
     font-family: 'DM Sans';
@@ -22,6 +28,7 @@ body {
   .container {
     position: relative;
     width: 688px;
+	padding: 0 90px !important;
     /* margin: auto; */
 
   }
@@ -63,12 +70,12 @@ body {
 
   /* Position the "next button" to the right */
   .next {
-    right: -42px;
+    right: 70px;
     border-radius: 3px 0 0 3px;
   }
 
   .prev {
-    left: -42px;
+    left: 70px;
 
   }
 
@@ -285,15 +292,16 @@ body {
 }
 
 object {
-	width: min(649px, 100%);
+	width: 100%;
+    padding: 30px;
 	height: min(672px, 100%);
 	aspect-ratio: 1.5 / 1;
 
 }
 
 .second-slider {
-	margin: 0px 83px;
-	margin-top: 52px;
+	margin: 0px 70px;
+	/* margin-top: 52px; */
 	overflow: auto;
 	display: flex;
 	gap: 20px;
@@ -306,6 +314,7 @@ object {
 
 
 .contect {
+	margin: 0 70px;
 	margin-top: 50px;
 	text-align: center;
 }
@@ -331,6 +340,19 @@ object {
 
 
 @media (max-width: 960px) {
+	.container {
+		position: relative;
+		width: 688px;
+		padding: 0 !important;
+		/* margin: auto; */
+	
+	  }
+	  .ar-wrapper{
+		display: block;
+	}
+	canvas{
+		display: unset !important;
+	}
 	.product-page {
 		flex-direction: column;
 	}
@@ -368,6 +390,11 @@ object {
 	.detail {
 		width: 100% !important;
 		margin-top: 40px;
+	}
+	.contect {
+		margin: 0px;
+		margin-top: 50px;
+		text-align: center;
 	}
 
 	.action-btn button {
