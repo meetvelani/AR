@@ -340,6 +340,12 @@ object {
 
 
 @media (max-width: 960px) {
+	object {
+        width: 100%;
+        padding: 15px;
+        height: min(672px, 100%);
+        aspect-ratio: 1.5 / 1;
+    }
 	.container {
 		position: relative;
 		width: 688px;
@@ -417,6 +423,12 @@ object {
 
 
 @media (min-width: 576px) and (max-width: 767px) {
+	object {
+        width: 100%;
+        padding: 15px;
+        height: min(672px, 100%);
+        aspect-ratio: 1.5 / 1;
+    }
 
 	.carousel-multiple .carousel-item.active,
 	.carousel-multiple .carousel-item-next,
@@ -502,6 +514,12 @@ object {
 }
 
 @media (min-width: 768px) and (max-width: 991px) {
+	object {
+        width: 100%;
+        padding: 15px;
+        height: min(672px, 100%);
+        aspect-ratio: 1.5 / 1;
+    }
 
 	.carousel-multiple .carousel-item.active,
 	.carousel-multiple .carousel-item-next,
