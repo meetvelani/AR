@@ -1,10 +1,12 @@
 const TRAY = document.getElementById('js-tray-slide');
-const modelViewerColor = document.querySelector("model-viewer#color");
+const modelViewerColor = document.querySelector("model-viewer#helmet");
 
 document.querySelector('#color-controls').addEventListener('click', (event) => {
   const colorString = event.target.dataset.color;
-  const [material] = modelViewerColor.model.materials;
-  material.pbrMetallicRoughness.setBaseColorFactor(colorString);
+  const material = modelViewerColor.model.materials;
+  console.log(material)
+  console.log(modelViewerColor.model)
+  material[2].pbrMetallicRoughness.setBaseColorFactor(colorString);
 });
 
 const colors = [
