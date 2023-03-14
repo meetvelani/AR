@@ -804,3 +804,19 @@ object {
 		visibility: visible;
 	}
 }
+
+@media (max-width: 680px) {
+	object {
+		width: 100%;
+		padding: 15px;
+		height: min(672px, 100%);
+		aspect-ratio: 1.5 / 1.2;
+	}
+	.second-slider {
+		margin: 0px 0px;
+		margin-top: 0px;
+		display: flex;
+	}
+    
+    
+}

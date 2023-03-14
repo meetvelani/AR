@@ -35,7 +35,18 @@
     align-items: center;
     cursor: pointer;
 }
+.option  img{
+    padding: 5px;
+}
+.option.--is-active {
+    border-right: 3px solid red;
+    /* width: 58px; */
+    cursor: default;
+}
 
+.option.--is-active:hover {
+    border-left: none;
+}
 .tray__swatch {
     transition: 0.1s ease-in;
     height: 40px;
@@ -126,19 +137,19 @@
         margin-bottom: 1px;
         padding: 5px;
         height: 47px;
-        width: 47px;
+        width: 75px;
         display: flex;
         /* flex-direction: row; */
     }
 
     .option.--is-active {
         border-right: 2px solid red;
-        width: 47px;
+        width: 80px;
     }
 
     .option img {
         height: 100%;
-        width: auto;
+        /* width: auto; */
         pointer-events: none;
     }
 }

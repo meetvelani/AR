@@ -1,13 +1,14 @@
 const TRAY = document.getElementById('js-tray-slide');
 const modelViewerColor = document.querySelector("model-viewer#helmet");
+var activeOption = '1';
 
-document.querySelector('#color-controls').addEventListener('click', (event) => {
-  const colorString = event.target.dataset.color;
-  const material = modelViewerColor.model.materials;
-  console.log(material)
-  console.log(modelViewerColor.model)
-  material[2].pbrMetallicRoughness.setBaseColorFactor(colorString);
-});
+// document.querySelector('#color-controls').addEventListener('click', (event) => {
+//   const colorString = event.target.dataset.color;
+//   const material = modelViewerColor.model.materials;
+//   console.log(material)
+//   console.log(modelViewerColor.model)
+//   material[2].pbrMetallicRoughness.setBaseColorFactor(colorString);
+// });
 
 const colors = [
   {
@@ -89,17 +90,37 @@ const modelViewerTexture1 = document.querySelector("model-viewer#helmet");
 
 modelViewerTexture1.addEventListener("load", () => {
 
-
-  const material = modelViewerTexture1.model.materials[0];
+  console.log(activeOption, "dfgdfsgd")
+  // const material = modelViewerTexture1.model.materials[1];
   console.log(modelViewerTexture1.model)
 
   const createAndApplyTexture = async (channel, color) => {
-    const texture = await modelViewerTexture1.createTexture(color.texture);
-    if (channel.includes('base') || channel.includes('metallic')) {
-      material.pbrMetallicRoughness[channel].setTexture(texture);
-    } else {
-      material[channel].setTexture(texture);
+    console.log(activeOption, "dfgdfsgd")
+    if (activeOption === "all") {
+      for (let i = 1; i < 5; i++) {
+        const material = modelViewerTexture1.model.materials[i];
+
+        const texture = await modelViewerTexture1.createTexture(color.texture);
+        if (channel.includes('base') || channel.includes('metallic')) {
+          material.pbrMetallicRoughness[channel].setTexture(texture);
+        } else {
+          material[channel].setTexture(texture);
+        }
+
+      }
     }
+    else {
+
+      const material = modelViewerTexture1.model.materials[activeOption];
+
+      const texture = await modelViewerTexture1.createTexture(color.texture);
+      if (channel.includes('base') || channel.includes('metallic')) {
+        material.pbrMetallicRoughness[channel].setTexture(texture);
+      } else {
+        material[channel].setTexture(texture);
+      }
+    }
+
   }
 
   for (const swatch of swatches) {
@@ -115,7 +136,7 @@ modelViewerTexture1.addEventListener("load", () => {
   }
 
   // document.querySelector('#normals').addEventListener('input', (event) => {
-    // createAndApplyTexture('normalTexture', event);
+  // createAndApplyTexture('normalTexture', event);
   // });
 
   // document.querySelector('#occlusion').addEventListener('input', (event) => {
@@ -163,7 +184,7 @@ for (const swatch of swatches) {
 
 function selectSwatch(e) {
   let color = colors[parseInt(e.target.dataset.key)];
-  createAndApplyTexture('normalTexture', color);
+  this.createAndApplyTexture('baseColorTexture', color);
 }
 
 
@@ -234,3 +255,21 @@ function slide(wrapper, items) {
 }
 
 slide(slider, sliderItems);
+
+// Select Option
+const options = document.querySelectorAll(".option");
+
+for (const option of options) {
+  option.addEventListener('click', selectOption);
+}
+
+function selectOption(e) {
+  console.log("ererfger")
+  let option = e.target;
+  activeOption = e.target.dataset.option;
+  console.log(activeOption)
+  for (const otherOption of options) {
+    otherOption.classList.remove('--is-active');
+  }
+  option.classList.add('--is-active');
+}
